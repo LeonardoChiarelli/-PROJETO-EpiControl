@@ -1,4 +1,4 @@
-package br.com.epiControl.model;
+package br.com.epiControl.domain.model;
 
 public enum AgenteCausador {
     VIRUS,

@@ -1,17 +1,22 @@
-package br.com.epiControl.controller;
+package br.com.epiControl.domain.controller;
 
+import br.com.epiControl.domain.dto.AnexarCasosDTO;
+import br.com.epiControl.domain.dto.DetalhesCasosDTO;
+import br.com.epiControl.domain.service.CasosService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.chrono.IsoEra;
-
 @RestController
 @RequestMapping("/epiControl/casos")
 public class CasosController {
+
+    @Autowired
+    private CasosService service;
 
     @PostMapping
     @Transactional

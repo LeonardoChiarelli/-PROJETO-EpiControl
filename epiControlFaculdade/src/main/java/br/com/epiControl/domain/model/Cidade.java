@@ -1,6 +1,8 @@
-package br.com.epiControl.model;
+package br.com.epiControl.domain.model;
 
+import br.com.epiControl.domain.dto.CadastrarCidadeDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,4 +31,12 @@ public class Cidade {
 
     @OneToMany(mappedBy = "cidade", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CasosEpidemiologicos> casosEpidemiologicos;
+
+    public Cidade(@Valid CadastrarCidadeDTO dto) {
+        this.nome = dto.nome();
+        this.estado = dto.SiglaEstado();
+        this.populacao = dto.populacao();
+        this.quantidadeHospitais = dto.quantidadeHospitais();
+        this.quantidadePostosDeSaude = dto.quantidadePostosDeSaude();
+    }
 }
