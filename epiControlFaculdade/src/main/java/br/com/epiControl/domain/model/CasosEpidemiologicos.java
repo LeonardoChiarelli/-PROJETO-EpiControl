@@ -1,6 +1,7 @@
 package br.com.epiControl.domain.model;
 
 import br.com.epiControl.domain.dto.AnexarCasosDTO;
+import br.com.epiControl.domain.dto.AtualizarDadosCasosDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,25 @@ public class CasosEpidemiologicos {
     private Integer numeroDeRecuperados;
     private Boolean status;
 
-    public CasosEpidemiologicos(@Valid AnexarCasosDTO dto) {
-        this.cidade =
+    public CasosEpidemiologicos(@Valid AnexarCasosDTO dto, Cidade cidade, Doenca doenca) {
+        this.cidade = cidade;
+        this.doenca = doenca;
+        this.dataDeRegistro = LocalDate.now();
+        this.ultimaAtualizacao = LocalDate.now();
+        this.numeroDeCasos = dto.numeroDeCasos();
+        this.numeroDeObitos = dto.numeroDeObitos();
+        this.numeroDeRecuperados = dto.numeroDeRecuperados();
+        this.status = true;
+    }
+
+    public CasosEpidemiologicos(Cidade cidade, Doenca doenca, LocalDate dataDeRegistro, @Valid AtualizarDadosCasosDTO dto) {
+        this.cidade = cidade;
+        this.doenca = doenca;
+        this.dataDeRegistro = dataDeRegistro;
+        this.ultimaAtualizacao = LocalDate.now();
+        this.numeroDeCasos = dto.numeroDeCasos();
+        this.numeroDeObitos = dto.numeroDeObitos();
+        this.numeroDeRecuperados = dto.numeroDeRecuperados();
+        this.status = dto.status();
     }
 }

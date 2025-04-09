@@ -1,15 +1,16 @@
 package br.com.epiControl.domain.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record AnexarCasosDTO(
         Long id,
 
-        @NotNull
-        Long idCidade,
+        @NotBlank
+        String idOuNomeCidade,
 
-        @NotNull
-        Long idDoenca,
+        @NotBlank
+        String idOuNomeDoenca,
 
         @NotNull
         Integer numeroDeCasos,
