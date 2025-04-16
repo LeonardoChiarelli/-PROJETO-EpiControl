@@ -1,4 +1,4 @@
-package br.com.epiControl.domain.viewer;
+package br.com.epiControl.domain.viewer.main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,17 +21,14 @@ public class MenuExibicaoPrincipal extends JFrame {
         Dimension buttonSize = new Dimension(200, 40);
         Font buttonFont = new Font("SansSerif", Font.PLAIN, 16);
 
-        JButton botaoCadastrarCidade = new JButton("Cadastrar Cidade");
-        botaoCadastrarCidade.setMaximumSize(buttonSize);
-        botaoCadastrarCidade.setFont(buttonFont);
-        botaoCadastrarCidade.addActionListener(SwingUtilities.invokeLater(() -> {
-           MenuCadastrarCidade menuCadastrar = new MenuCadastrarCidade();
-           menuCadastrar.setVisible(true);
-        }))
+        JButton botaoCidade = new JButton("Cidade");
+        botaoCidade.setMaximumSize(buttonSize);
+        botaoCidade.setFont(buttonFont);
+        // botaoCidade.addActionListener();
 
-        JButton botaoCadastrarDoenca = new JButton("Cadastrar Doença");
-        botaoCadastrarDoenca.setMaximumSize(buttonSize);
-        botaoCadastrarDoenca.setFont(buttonFont);
+        JButton botaoDoenca = new JButton("Doença");
+        botaoDoenca.setMaximumSize(buttonSize);
+        botaoDoenca.setFont(buttonFont);
 
         JButton botaoAnexarDoenca = new JButton("Anexar Casos");
         botaoAnexarDoenca.setMaximumSize(buttonSize);
@@ -43,9 +40,9 @@ public class MenuExibicaoPrincipal extends JFrame {
 
         // Espaçamento entre os botões
         mainPanel.add(Box.createVerticalGlue());
-        mainPanel.add(botaoCadastrarCidade);
+        mainPanel.add(botaoCidade);
         mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));
-        mainPanel.add(botaoCadastrarDoenca);
+        mainPanel.add(botaoDoenca);
         mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));
         mainPanel.add(botaoAnexarDoenca);
         mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));

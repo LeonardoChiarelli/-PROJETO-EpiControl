@@ -39,4 +39,10 @@ public class CidadeController {
     public ResponseEntity<DetalhesCidadeDTO> detalharCidade(@PathVariable String idOuNome){
         return ResponseEntity.ok(new DetalhesCidadeDTO(service.detalhar(idOuNome)));
     }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<DetalhesCidadeDTO> atualizarInformacoesCidade(){
+        return null;
+    }
 }
