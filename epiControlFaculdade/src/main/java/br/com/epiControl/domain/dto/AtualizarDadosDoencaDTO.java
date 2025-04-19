@@ -11,4 +11,7 @@ public record AtualizarDadosDoencaDTO(
         List<String> medidasDePrevencao,
         Double taxaDeTransmissao
 ) {
+    public AtualizarDadosDoencaDTO(AgenteCausador agenteCausador, String sintomas, String transmissao, String prevencao, double taxa){
+        this(List.of(agenteCausador), List.of(sintomas), List.of(transmissao), List.of(prevencao), taxa);
+    }
 }

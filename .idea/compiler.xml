@@ -12,6 +12,7 @@
         </processorPath>
         <module name="epiControl" />
         <module name="epiControlFaculdade" />
+        <module name="epiControl (1)" />
       </profile>
       <profile name="Annotation profile for epiControlFaculdade" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -23,11 +24,22 @@
         </processorPath>
         <module name="epiControlFaculdade" />
       </profile>
+      <profile name="Annotation profile for epiControl (2)" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
+        </processorPath>
+        <module name="epiControl (2)" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="epiControl" options="-parameters" />
+      <module name="epiControl (1)" options="-parameters" />
+      <module name="epiControl (2)" options="-parameters" />
       <module name="epiControlFaculdade" options="-parameters" />
     </option>
   </component>

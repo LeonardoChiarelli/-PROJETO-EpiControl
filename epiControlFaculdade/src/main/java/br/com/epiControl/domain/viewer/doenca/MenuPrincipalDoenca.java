@@ -1,9 +1,18 @@
 package br.com.epiControl.domain.viewer.doenca;
 
+import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+
 import javax.swing.*;
 import java.awt.*;
 
+@org.springframework.stereotype.Component
 public class MenuPrincipalDoenca extends JFrame {
+
+    @Autowired
+    private DoencaService service;
 
     public MenuPrincipalDoenca(){
         setTitle("Menu Principal Doença");
@@ -21,6 +30,7 @@ public class MenuPrincipalDoenca extends JFrame {
 
         mainPainel.add(buttonPanel);
         mainPainel.add(Box.createVerticalGlue());
+
         add(mainPainel);
         setVisible(true);
     }
@@ -81,7 +91,32 @@ public class MenuPrincipalDoenca extends JFrame {
         buttonPanel.add(voltarBtn);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 
+        registrarDoencaBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(MenuCadastrarDoenca::new);
+        });
+
+        detalharDoencaBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(MenuDetalharDoenca::new);
+        });
+
+        atualizarInformacoesBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(MenuAdicionarInformacoesDoenca::new);
+        });
+
+        removerInformacoesBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(MenuRemoverInformacoesDoenca::new);
+        });
+
+        voltarBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(MenuExibicaoPrincipal::new);
+        });
+
+        listarDoencaBtn.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, service.listar());
+        });
+
         return buttonPanel;
+
     }
 
     public static void main(String[] args) {

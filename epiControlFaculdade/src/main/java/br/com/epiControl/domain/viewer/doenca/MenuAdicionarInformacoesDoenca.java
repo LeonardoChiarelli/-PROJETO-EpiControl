@@ -12,13 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 
 @Component
-public class MenuRemoverInformacoesDoenca extends JFrame {
+public class MenuAdicionarInformacoesDoenca extends JFrame {
 
     @Autowired
     private IDoencaRepository repository;
 
-    public MenuRemoverInformacoesDoenca(){
-        setTitle("Menu Remover Informações");
+    public MenuAdicionarInformacoesDoenca(){
+        setTitle("Menu Adicionar Informações");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
@@ -73,7 +73,7 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
             var informacoes = new AtualizarDadosDoencaDTO(agenteCausador, sintomas, transmissao, prevencao, taxa);
 
             var doenca = HelperMethod.carregarDoenca(idOuNomeField.getText());
-            doenca.retirarInformacoes(informacoes);
+            doenca.adicionarInformacoes(informacoes);
 
             repository.save(doenca);
 
@@ -115,7 +115,6 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuRemoverInformacoesDoenca::new);
+        SwingUtilities.invokeLater(MenuAdicionarInformacoesDoenca::new);
     }
 }
-

@@ -50,12 +50,10 @@ public class MenuExibicaoPrincipal extends JFrame {
         mainPanel.add(Box.createVerticalGlue());
 
         add(mainPanel);
+        setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            MenuExibicaoPrincipal menu = new MenuExibicaoPrincipal();
-            menu.setVisible(true);
-        });
+        SwingUtilities.invokeLater(MenuExibicaoPrincipal::new);
     }
 }

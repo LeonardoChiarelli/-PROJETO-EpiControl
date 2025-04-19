@@ -18,7 +18,7 @@ public class MenuCadastrarDoenca extends JFrame{
         // Criação dos componentes
         JTextField nomeField = new JTextField(20);
         JComboBox<String> agenteCausadorBox = new JComboBox<>(new String[]{
-                "VÍRUS", "BACTERIAS", "PROTOZOARIOS", "FUNGOS", "VERMES PARASITAS"
+                "VÍRUS", "BACTÉRIAS", "PROTOZOÁRIOS", "FUNGOS", "VERMES PARASITAS"
         });
         JTextField sintomasField = new JTextField(20);
         JTextField transmissaoField = new JTextField(20);
