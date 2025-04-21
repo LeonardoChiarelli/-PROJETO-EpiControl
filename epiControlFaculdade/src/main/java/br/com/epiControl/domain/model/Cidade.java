@@ -26,6 +26,7 @@ public class Cidade {
     private String nome;
     private String estado;
 
+    @Column(name = "população(milhões)")
     private Double populacao;
     private Integer quantidadeHospitais;
     private Integer quantidadePostosDeSaude;

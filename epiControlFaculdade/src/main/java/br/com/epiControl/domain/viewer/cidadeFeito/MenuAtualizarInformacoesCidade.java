@@ -1,21 +1,26 @@
 package br.com.epiControl.domain.viewer.cidadeFeito;
 
+import br.com.epiControl.EpiControlApplication;
 import br.com.epiControl.domain.dto.AtualizarDadosCidadeDTO;
 import br.com.epiControl.domain.dto.DetalhesCidadeDTO;
+import br.com.epiControl.domain.service.CasosService;
 import br.com.epiControl.domain.service.CidadeService;
+import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.general.config.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Component
 public class MenuAtualizarInformacoesCidade extends JFrame {
 
-    @Autowired
-    private CidadeService service;
+    private final CidadeService service;
 
-    public MenuAtualizarInformacoesCidade(){
+    public MenuAtualizarInformacoesCidade(CidadeService service){
+        this.service = service;
         setTitle("Menu Atualizar Informações Cidade");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +64,17 @@ public class MenuAtualizarInformacoesCidade extends JFrame {
             postosField.setText("");
         });
 
-        voltarButton.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalCidade::new));
+        voltarButton.addActionListener(e -> {
+            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
+
+            ServiceRegistry registry = new ServiceRegistry(
+                    context.getBean(CidadeService.class),
+                    context.getBean(DoencaService.class),
+                    context.getBean(CasosService.class)
+            );
+
+            SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry));
+        });
 
         buttonPanel.add(atualizarButton);
         buttonPanel.add(limparButton);
@@ -87,9 +102,5 @@ public class MenuAtualizarInformacoesCidade extends JFrame {
         panel.add(fieldPanel);
 
         return textField;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuAtualizarInformacoesCidade::new);
     }
 }

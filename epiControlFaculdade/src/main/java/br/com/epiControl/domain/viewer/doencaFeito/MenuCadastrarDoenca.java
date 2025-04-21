@@ -1,10 +1,27 @@
-package br.com.epiControl.domain.viewer.doenca;
+package br.com.epiControl.domain.viewer.doencaFeito;
+
+import br.com.epiControl.EpiControlApplication;
+import br.com.epiControl.domain.dto.CadastrarDoencaDTO;
+import br.com.epiControl.domain.dto.DetalhesDoencaDTO;
+import br.com.epiControl.domain.model.AgenteCausador;
+import br.com.epiControl.domain.service.CasosService;
+import br.com.epiControl.domain.service.CidadeService;
+import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.general.config.ServiceRegistry;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class MenuCadastrarDoenca extends JFrame{
-    public MenuCadastrarDoenca(){
+
+    private final DoencaService service;
+
+    public MenuCadastrarDoenca(DoencaService service){
+        this.service = service;
+
         setTitle("Menu de Cadastro de Doenças");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -27,6 +44,7 @@ public class MenuCadastrarDoenca extends JFrame{
 
         JButton cadastrarButton = new JButton("Cadastrar");
         JButton limparButton = new JButton("Limpar");
+        JButton voltarButton = new JButton("Voltar");
 
         // Adicionando os campos ao painel
         mainPanel.add(createLabeledField("Nome:", nomeField));
@@ -39,6 +57,7 @@ public class MenuCadastrarDoenca extends JFrame{
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(cadastrarButton);
         buttonPanel.add(limparButton);
+        buttonPanel.add(voltarButton);
         buttonPanel.setBackground(new Color(250, 235, 215));
         mainPanel.add(buttonPanel);
 
@@ -53,21 +72,56 @@ public class MenuCadastrarDoenca extends JFrame{
         });
 
         cadastrarButton.addActionListener(e -> {
+
             String nome = nomeField.getText();
-            String agente = (String) agenteCausadorBox.getSelectedItem();
+            AgenteCausador agente = getAgenteCausador(agenteCausadorBox.getSelectedItem());
             String sintomas = sintomasField.getText();
             String transmissao = transmissaoField.getText();
             String prevencao = prevencaoField.getText();
             double taxa = (Double) taxaTransmissaoSpinner.getValue();
 
-            JOptionPane.showMessageDialog(this, "Doença cadastrada com sucesso:\n" +
-                    "Nome: " + nome + "\nAgente: " + agente + "\nSintomas: " + sintomas +
-                    "\nTransmissão: " + transmissao + "\nPrevenção: " + prevencao +
-                    "\nTaxa: " + taxa + "%");
+            assert agente != null;
+            assert nome != null;
+            assert sintomas != null;
+            assert transmissao != null;
+            assert prevencao != null;
+            assert taxa != 0;
+
+            var infomacoes = new CadastrarDoencaDTO(null, nome, List.of(agente), List.of(sintomas), List.of(transmissao), List.of(prevencao), taxa);
+
+            var doenca = service.cadastrar(infomacoes);
+
+            JOptionPane.showMessageDialog(this, new DetalhesDoencaDTO(doenca));
+        });
+
+        voltarButton.addActionListener(e -> {
+            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
+
+            ServiceRegistry registry = new ServiceRegistry(
+                    context.getBean(CidadeService.class),
+                    context.getBean(DoencaService.class),
+                    context.getBean(CasosService.class)
+            );
+
+            SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry));
         });
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    private AgenteCausador getAgenteCausador(Object selectedItem) {
+
+        String agenteCausador = (String) selectedItem;
+
+        return switch (agenteCausador){
+            case "VÍRUS" -> AgenteCausador.VIRUS;
+            case "BACTÉRIAS" -> AgenteCausador.BACTERIAS;
+            case "PROTOZOÁRIOS" -> AgenteCausador.PROTOZOARIOS;
+            case "FUNGOS" -> AgenteCausador.FUNGOS;
+            case "VERMES PARASITAS" -> AgenteCausador.VERMES_PARASITAS;
+            default -> null;
+        };
     }
 
     private JPanel createLabeledField(String labelText, JComponent inputComponent) {
@@ -79,10 +133,6 @@ public class MenuCadastrarDoenca extends JFrame{
         panel.add(label);
         panel.add(inputComponent);
         return panel;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuCadastrarDoenca::new);
     }
 }
 

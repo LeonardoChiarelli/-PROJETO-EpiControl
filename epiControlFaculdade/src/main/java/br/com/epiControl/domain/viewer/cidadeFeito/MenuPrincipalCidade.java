@@ -1,19 +1,23 @@
 package br.com.epiControl.domain.viewer.cidadeFeito;
 
+import br.com.epiControl.EpiControlApplication;
+import br.com.epiControl.domain.service.CasosService;
 import br.com.epiControl.domain.service.CidadeService;
+import br.com.epiControl.domain.service.DoencaService;
 import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.epiControl.general.config.ServiceRegistry;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
 
-@org.springframework.stereotype.Component
 public class MenuPrincipalCidade extends JFrame {
 
-    @Autowired
-    private static CidadeService service;
+    private final CidadeService service;
 
-    public MenuPrincipalCidade(){
+    public MenuPrincipalCidade(ServiceRegistry registry){
+        this.service = registry.getCidadeService();
         setTitle("Menu Principal Cidade");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,7 +40,7 @@ public class MenuPrincipalCidade extends JFrame {
         setVisible(true);
     }
 
-    private static JPanel getJPanel() {
+    private JPanel getJPanel() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -80,19 +84,25 @@ public class MenuPrincipalCidade extends JFrame {
         buttonPanel.add(voltarBtn);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 
-        cadastrarCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuCadastrarCidade::new));
+        cadastrarCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuCadastrarCidade(service)));
 
         listarCidadesBtn.addActionListener(e -> JOptionPane.showMessageDialog(null, service.listarJOption()));
 
         detalharCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuDetalharCidade::new));
 
-        voltarBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuExibicaoPrincipal::new));
+        voltarBtn.addActionListener(e -> {
+            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
 
-        atualizarInfoCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuAtualizarInformacoesCidade::new));
+            ServiceRegistry registry = new ServiceRegistry(
+                    context.getBean(CidadeService.class),
+                    context.getBean(DoencaService.class),
+                    context.getBean(CasosService.class)
+            );
+
+            SwingUtilities.invokeLater(() -> new MenuExibicaoPrincipal(registry));
+        });
+
+        atualizarInfoCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuAtualizarInformacoesCidade(service)));
         return buttonPanel;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuPrincipalCidade::new);
     }
 }

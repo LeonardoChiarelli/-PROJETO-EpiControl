@@ -1,1 +1,17 @@
-spring.application.name=epiControl
+spring:
+  application:
+    name: epiControl
+  main:
+    headless: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/epicontrol_swing
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: true
+  server:
+    error:
+      include-stacktrace: never

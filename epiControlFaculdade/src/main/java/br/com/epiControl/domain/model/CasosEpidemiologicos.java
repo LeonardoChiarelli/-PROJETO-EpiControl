@@ -23,9 +23,11 @@ public class CasosEpidemiologicos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
 
+    @ManyToOne
     @JoinColumn(name = "doenca_id")
     private Doenca doenca;
 

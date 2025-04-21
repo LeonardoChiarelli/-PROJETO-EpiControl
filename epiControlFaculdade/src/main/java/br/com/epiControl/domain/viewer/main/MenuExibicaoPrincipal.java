@@ -2,14 +2,18 @@ package br.com.epiControl.domain.viewer.main;
 
 import br.com.epiControl.domain.viewer.casos.MenuAnexarCasos;
 import br.com.epiControl.domain.viewer.cidadeFeito.MenuPrincipalCidade;
-import br.com.epiControl.domain.viewer.doenca.MenuPrincipalDoenca;
+import br.com.epiControl.domain.viewer.doencaFeito.MenuPrincipalDoenca;
+import br.com.epiControl.general.config.ServiceRegistry;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuExibicaoPrincipal extends JFrame {
 
-    public MenuExibicaoPrincipal() {
+    private final ServiceRegistry registry;
+
+    public MenuExibicaoPrincipal(ServiceRegistry registry) {
+        this.registry = registry;
         setTitle("Menu de Exibição Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -53,19 +57,15 @@ public class MenuExibicaoPrincipal extends JFrame {
         mainPanel.add(botaoGerarGrafico);
         mainPanel.add(Box.createVerticalGlue());
 
-        botaoCidade.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalCidade::new));
+        botaoCidade.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry)));
 
-        botaoDoenca.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalDoenca::new));
+        botaoDoenca.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry)));
 
-        botaoAnexarDoenca.addActionListener(e -> SwingUtilities.invokeLater(MenuAnexarCasos::new));
+        // botaoAnexarDoenca.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuAnexarCasos(registry)));
 
         // botaoGerarGrafico.addActionListener(e -> );
 
         add(mainPanel);
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuExibicaoPrincipal::new);
     }
 }

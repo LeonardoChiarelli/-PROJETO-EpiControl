@@ -1,23 +1,30 @@
-package br.com.epiControl.domain.viewer.doenca;
+package br.com.epiControl.domain.viewer.doencaFeito;
 
+import br.com.epiControl.EpiControlApplication;
 import br.com.epiControl.domain.dto.AtualizarDadosDoencaDTO;
 import br.com.epiControl.domain.dto.DetalhesDoencaDTO;
 import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.model.AgenteCausador;
 import br.com.epiControl.domain.repository.IDoencaRepository;
+import br.com.epiControl.domain.service.CasosService;
+import br.com.epiControl.domain.service.CidadeService;
+import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.domain.viewer.cidadeFeito.MenuPrincipalCidade;
+import br.com.epiControl.general.config.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Component
 public class MenuAdicionarInformacoesDoenca extends JFrame {
 
-    @Autowired
-    private IDoencaRepository repository;
+    private final DoencaService service;
 
-    public MenuAdicionarInformacoesDoenca(){
+    public MenuAdicionarInformacoesDoenca(DoencaService service){
+        this.service = service;
         setTitle("Menu Adicionar Informações");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -39,6 +46,7 @@ public class MenuAdicionarInformacoesDoenca extends JFrame {
 
         JButton registrarInformacoes = new JButton("Registrar Informações");
         JButton limparButton = new JButton("Limpar");
+        JButton voltarButton = new JButton("Voltar");
 
         mainPanel.add(createLabeledField("Id ou Nome:", idOuNomeField));
         mainPanel.add(createLabeledField("Agente Causador:", agenteCausadorBox));
@@ -50,6 +58,7 @@ public class MenuAdicionarInformacoesDoenca extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(registrarInformacoes);
         buttonPanel.add(limparButton);
+        buttonPanel.add(voltarButton);
         buttonPanel.setBackground(new Color(255, 235, 215));
         mainPanel.add(buttonPanel);
 
@@ -72,14 +81,21 @@ public class MenuAdicionarInformacoesDoenca extends JFrame {
 
             var informacoes = new AtualizarDadosDoencaDTO(agenteCausador, sintomas, transmissao, prevencao, taxa);
 
-            var doenca = HelperMethod.carregarDoenca(idOuNomeField.getText());
-            doenca.adicionarInformacoes(informacoes);
+            var doenca = service.adicionarInfo(idOuNomeField.getText(), informacoes);
 
-            repository.save(doenca);
+            JOptionPane.showMessageDialog(this, doenca);
+        });
 
-            var doencaDetalhes = new DetalhesDoencaDTO(doenca);
+        voltarButton.addActionListener(e -> {
+            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
 
-            JOptionPane.showMessageDialog(this, doencaDetalhes);
+            ServiceRegistry registry = new ServiceRegistry(
+                    context.getBean(CidadeService.class),
+                    context.getBean(DoencaService.class),
+                    context.getBean(CasosService.class)
+            );
+
+            SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry));
         });
 
         add(mainPanel);
@@ -112,9 +128,5 @@ public class MenuAdicionarInformacoesDoenca extends JFrame {
         panel.add(label);
         panel.add(inputComponent);
         return panel;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuAdicionarInformacoesDoenca::new);
     }
 }

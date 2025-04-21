@@ -1,23 +1,24 @@
-package br.com.epiControl.domain.viewer.doenca;
+package br.com.epiControl.domain.viewer.doencaFeito;
 
 import br.com.epiControl.domain.dto.AtualizarDadosDoencaDTO;
 import br.com.epiControl.domain.dto.DetalhesDoencaDTO;
 import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.model.AgenteCausador;
 import br.com.epiControl.domain.repository.IDoencaRepository;
+import br.com.epiControl.domain.service.DoencaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Component
 public class MenuRemoverInformacoesDoenca extends JFrame {
 
-    @Autowired
-    private IDoencaRepository repository;
+    private final DoencaService service;
 
-    public MenuRemoverInformacoesDoenca(){
+    public MenuRemoverInformacoesDoenca(DoencaService service){
+        this.service = service;
+
         setTitle("Menu Remover Informações");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -72,14 +73,9 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
 
             var informacoes = new AtualizarDadosDoencaDTO(agenteCausador, sintomas, transmissao, prevencao, taxa);
 
-            var doenca = HelperMethod.carregarDoenca(idOuNomeField.getText());
-            doenca.retirarInformacoes(informacoes);
+            var doenca = service.removerInfo(idOuNomeField.getText(), informacoes);
 
-            repository.save(doenca);
-
-            var doencaDetalhes = new DetalhesDoencaDTO(doenca);
-
-            JOptionPane.showMessageDialog(this, doencaDetalhes);
+            JOptionPane.showMessageDialog(this, doenca);
         });
 
         add(mainPanel);
@@ -112,10 +108,6 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
         panel.add(label);
         panel.add(inputComponent);
         return panel;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuRemoverInformacoesDoenca::new);
     }
 }
 

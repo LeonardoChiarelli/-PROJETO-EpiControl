@@ -1,19 +1,24 @@
-package br.com.epiControl.domain.viewer.doenca;
+package br.com.epiControl.domain.viewer.doencaFeito;
 
+import br.com.epiControl.EpiControlApplication;
+import br.com.epiControl.domain.service.CasosService;
+import br.com.epiControl.domain.service.CidadeService;
 import br.com.epiControl.domain.service.DoencaService;
 import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
+import br.com.epiControl.general.config.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
 
-@org.springframework.stereotype.Component
 public class MenuPrincipalDoenca extends JFrame {
 
-    @Autowired
-    private DoencaService service;
+    private final DoencaService service;
 
-    public MenuPrincipalDoenca(){
+    public MenuPrincipalDoenca(ServiceRegistry registry){
+        this.service = registry.getDoencaService();
         setTitle("Menu Principal Doença");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,23 +96,31 @@ public class MenuPrincipalDoenca extends JFrame {
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 
         registrarDoencaBtn.addActionListener(e -> {
-            SwingUtilities.invokeLater(MenuCadastrarDoenca::new);
+            SwingUtilities.invokeLater(() -> new MenuCadastrarDoenca(service));
         });
 
         detalharDoencaBtn.addActionListener(e -> {
-            SwingUtilities.invokeLater(MenuDetalharDoenca::new);
+            SwingUtilities.invokeLater(() -> new MenuDetalharDoenca(service));
         });
 
         atualizarInformacoesBtn.addActionListener(e -> {
-            SwingUtilities.invokeLater(MenuAdicionarInformacoesDoenca::new);
+            SwingUtilities.invokeLater(() -> new MenuAdicionarInformacoesDoenca(service));
         });
 
         removerInformacoesBtn.addActionListener(e -> {
-            SwingUtilities.invokeLater(MenuRemoverInformacoesDoenca::new);
+            SwingUtilities.invokeLater(() -> new MenuRemoverInformacoesDoenca(service));
         });
 
         voltarBtn.addActionListener(e -> {
-            SwingUtilities.invokeLater(MenuExibicaoPrincipal::new);
+            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
+
+            ServiceRegistry registry = new ServiceRegistry(
+                    context.getBean(CidadeService.class),
+                    context.getBean(DoencaService.class),
+                    context.getBean(CasosService.class)
+            );
+
+            SwingUtilities.invokeLater(() -> new MenuExibicaoPrincipal(registry));
         });
 
         listarDoencaBtn.addActionListener(e -> {
@@ -116,9 +129,5 @@ public class MenuPrincipalDoenca extends JFrame {
 
         return buttonPanel;
 
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuPrincipalDoenca::new);
     }
 }

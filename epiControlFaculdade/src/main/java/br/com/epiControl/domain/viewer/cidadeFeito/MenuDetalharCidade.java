@@ -1,7 +1,15 @@
 package br.com.epiControl.domain.viewer.cidadeFeito;
 
+import br.com.epiControl.EpiControlApplication;
 import br.com.epiControl.domain.dto.DetalhesCidadeDTO;
 import br.com.epiControl.domain.helper.HelperMethod;
+import br.com.epiControl.domain.service.CasosService;
+import br.com.epiControl.domain.service.CidadeService;
+import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
+import br.com.epiControl.general.config.ServiceRegistry;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +44,17 @@ public class MenuDetalharCidade extends JFrame {
             JOptionPane.showMessageDialog(this, new DetalhesCidadeDTO(cidade));
         });
 
-        voltarButton.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalCidade::new));
+        voltarButton.addActionListener(e -> {
+            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
+
+            ServiceRegistry registry = new ServiceRegistry(
+                    context.getBean(CidadeService.class),
+                    context.getBean(DoencaService.class),
+                    context.getBean(CasosService.class)
+            );
+
+            SwingUtilities.invokeLater(() -> new MenuExibicaoPrincipal(registry));
+        });
 
         buttonPanel.add(detalharButton);
         buttonPanel.add(voltarButton);

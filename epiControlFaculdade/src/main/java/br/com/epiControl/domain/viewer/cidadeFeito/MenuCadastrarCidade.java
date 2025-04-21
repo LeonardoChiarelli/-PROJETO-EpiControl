@@ -1,21 +1,25 @@
 package br.com.epiControl.domain.viewer.cidadeFeito;
 
+import br.com.epiControl.EpiControlApplication;
 import br.com.epiControl.domain.dto.CadastrarCidadeDTO;
 import br.com.epiControl.domain.dto.DetalhesCidadeDTO;
+import br.com.epiControl.domain.service.CasosService;
 import br.com.epiControl.domain.service.CidadeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
+import br.com.epiControl.general.config.ServiceRegistry;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Component
 public class MenuCadastrarCidade extends JFrame {
 
-    @Autowired
-    private CidadeService service;
+    private final CidadeService service;
 
-    public MenuCadastrarCidade() {
+    public MenuCadastrarCidade(CidadeService service) {
+        this.service = service;
         setTitle("Menu de Cadastro de Cidades");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +70,17 @@ public class MenuCadastrarCidade extends JFrame {
             postosField.setText("");
         });
 
-        voltarButton.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalCidade::new));
+        voltarButton.addActionListener(e -> {
+            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
+
+            ServiceRegistry registry = new ServiceRegistry(
+                    context.getBean(CidadeService.class),
+                    context.getBean(DoencaService.class),
+                    context.getBean(CasosService.class)
+            );
+
+            SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry));
+        });
 
         buttonPanel.add(cadastrarButton);
         buttonPanel.add(limparButton);
@@ -93,10 +107,6 @@ public class MenuCadastrarCidade extends JFrame {
         panel.add(fieldPanel);
 
         return textField;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuCadastrarCidade::new);
     }
 }
 
