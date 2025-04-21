@@ -23,6 +23,7 @@ public class MenuExibicaoPrincipal extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(new Color(250, 235, 215)); // Cor "antiquewhite"
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Estilo comum para os botões
