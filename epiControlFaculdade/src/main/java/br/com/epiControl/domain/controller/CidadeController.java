@@ -1,8 +1,10 @@
 package br.com.epiControl.domain.controller;
 
+import br.com.epiControl.domain.dto.AtualizarDadosCidadeDTO;
 import br.com.epiControl.domain.dto.CadastrarCidadeDTO;
 import br.com.epiControl.domain.dto.DetalhesCidadeDTO;
 import br.com.epiControl.domain.dto.ListaCidadesDTO;
+import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.service.CidadeService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -42,7 +44,8 @@ public class CidadeController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<DetalhesCidadeDTO> atualizarInformacoesCidade(){
-        return null;
+    public ResponseEntity<DetalhesCidadeDTO> atualizarInformacoesCidade(AtualizarDadosCidadeDTO dto){
+
+        return ResponseEntity.ok(new DetalhesCidadeDTO(service.atualizarInfo(dto)));
     }
 }

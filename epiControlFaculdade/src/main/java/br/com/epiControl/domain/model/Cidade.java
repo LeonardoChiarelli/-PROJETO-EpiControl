@@ -1,5 +1,6 @@
 package br.com.epiControl.domain.model;
 
+import br.com.epiControl.domain.dto.AtualizarDadosCidadeDTO;
 import br.com.epiControl.domain.dto.CadastrarCidadeDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -34,9 +35,15 @@ public class Cidade {
 
     public Cidade(@Valid CadastrarCidadeDTO dto) {
         this.nome = dto.nome();
-        this.estado = dto.SiglaEstado();
+        this.estado = dto.siglaEstado();
         this.populacao = dto.populacao();
         this.quantidadeHospitais = dto.quantidadeHospitais();
         this.quantidadePostosDeSaude = dto.quantidadePostosDeSaude();
+    }
+
+    public void atualizarInfo(AtualizarDadosCidadeDTO dto) {
+        if (dto.populacao() != null){ this.populacao = dto.populacao(); }
+        if (dto.quantidadeHospitais() != null){ this.quantidadeHospitais = dto.quantidadeHospitais(); }
+        if (dto.quantidadePostosDeSaude() != null){ this.quantidadePostosDeSaude = dto.quantidadePostosDeSaude(); }
     }
 }

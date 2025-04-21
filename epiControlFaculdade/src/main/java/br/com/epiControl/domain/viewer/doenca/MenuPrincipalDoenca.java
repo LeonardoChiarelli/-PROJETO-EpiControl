@@ -3,7 +3,6 @@ package br.com.epiControl.domain.viewer.doenca;
 import br.com.epiControl.domain.service.DoencaService;
 import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -112,7 +111,7 @@ public class MenuPrincipalDoenca extends JFrame {
         });
 
         listarDoencaBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, service.listar());
+            JOptionPane.showMessageDialog(this, service.listarJOption());
         });
 
         return buttonPanel;

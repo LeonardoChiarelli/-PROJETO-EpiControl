@@ -1,9 +1,17 @@
-package br.com.epiControl.domain.viewer.cidade;
+package br.com.epiControl.domain.viewer.cidadeFeito;
+
+import br.com.epiControl.domain.service.CidadeService;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.swing.*;
 import java.awt.*;
 
+@org.springframework.stereotype.Component
 public class MenuPrincipalCidade extends JFrame {
+
+    @Autowired
+    private static CidadeService service;
 
     public MenuPrincipalCidade(){
         setTitle("Menu Principal Cidade");
@@ -23,6 +31,7 @@ public class MenuPrincipalCidade extends JFrame {
 
         mainPanel.add(buttonPanel);
         mainPanel.add(Box.createVerticalGlue());
+
         add(mainPanel);
         setVisible(true);
     }
@@ -34,7 +43,7 @@ public class MenuPrincipalCidade extends JFrame {
         buttonPanel.setOpaque(false); // Transparente para manter o fundo do painel principal
 
         // Estilo comum para os botões
-        Dimension buttonSize = new Dimension(200, 40);
+        Dimension buttonSize = new Dimension(250, 40);
         Font buttonFont = new Font("SansSerif", Font.PLAIN, 16);
 
         // Criação dos botões
@@ -54,6 +63,10 @@ public class MenuPrincipalCidade extends JFrame {
         voltarBtn.setMaximumSize(buttonSize);
         voltarBtn.setFont(buttonFont);
 
+        JButton atualizarInfoCidadeBtn = new JButton("Atualizar Informações");
+        atualizarInfoCidadeBtn.setMaximumSize(buttonSize);
+        atualizarInfoCidadeBtn.setFont(buttonFont);
+
         // Adiciona os botões ao painel
         buttonPanel.add(Box.createVerticalGlue());
         buttonPanel.add(cadastrarCidadeBtn);
@@ -62,8 +75,20 @@ public class MenuPrincipalCidade extends JFrame {
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
         buttonPanel.add(detalharCidadeBtn);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
+        buttonPanel.add(atualizarInfoCidadeBtn);
+        buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
         buttonPanel.add(voltarBtn);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
+
+        cadastrarCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuCadastrarCidade::new));
+
+        listarCidadesBtn.addActionListener(e -> JOptionPane.showMessageDialog(null, service.listarJOption()));
+
+        detalharCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuDetalharCidade::new));
+
+        voltarBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuExibicaoPrincipal::new));
+
+        atualizarInfoCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuAtualizarInformacoesCidade::new));
         return buttonPanel;
     }
 

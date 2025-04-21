@@ -1,5 +1,9 @@
 package br.com.epiControl.domain.viewer.main;
 
+import br.com.epiControl.domain.viewer.casos.MenuAnexarCasos;
+import br.com.epiControl.domain.viewer.cidadeFeito.MenuPrincipalCidade;
+import br.com.epiControl.domain.viewer.doenca.MenuPrincipalDoenca;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -48,6 +52,14 @@ public class MenuExibicaoPrincipal extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));
         mainPanel.add(botaoGerarGrafico);
         mainPanel.add(Box.createVerticalGlue());
+
+        botaoCidade.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalCidade::new));
+
+        botaoDoenca.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalDoenca::new));
+
+        botaoAnexarDoenca.addActionListener(e -> SwingUtilities.invokeLater(MenuAnexarCasos::new));
+
+        // botaoGerarGrafico.addActionListener(e -> );
 
         add(mainPanel);
         setVisible(true);

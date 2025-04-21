@@ -1,9 +1,19 @@
-package br.com.epiControl.domain.viewer.cidade;
+package br.com.epiControl.domain.viewer.cidadeFeito;
+
+import br.com.epiControl.domain.dto.CadastrarCidadeDTO;
+import br.com.epiControl.domain.dto.DetalhesCidadeDTO;
+import br.com.epiControl.domain.service.CidadeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 
+@Component
 public class MenuCadastrarCidade extends JFrame {
+
+    @Autowired
+    private CidadeService service;
 
     public MenuCadastrarCidade() {
         setTitle("Menu de Cadastro de Cidades");
@@ -19,7 +29,7 @@ public class MenuCadastrarCidade extends JFrame {
 
         // Campos e labels
         JTextField nomeField = createFieldWithLabel(mainPanel, "Nome:");
-        JTextField estadoField = createFieldWithLabel(mainPanel, "Estado:");
+        JTextField estadoField = createFieldWithLabel(mainPanel, "Sigla do Estado:");
         JTextField populacaoField = createFieldWithLabel(mainPanel, "População Total:");
         JTextField hospitaisField = createFieldWithLabel(mainPanel, "Quantidade de Hospitais:");
         JTextField postosField = createFieldWithLabel(mainPanel, "Quantidade de Postos de Saúde:");
@@ -31,6 +41,21 @@ public class MenuCadastrarCidade extends JFrame {
 
         JButton cadastrarButton = new JButton("Cadastrar");
         JButton limparButton = new JButton("Limpar");
+        JButton voltarButton = new JButton("Voltar");
+
+        cadastrarButton.addActionListener(e -> {
+            String nomeCidade = nomeField.getText();
+            String estadoCidade = estadoField.getText();
+            Double populacaoCidade = Double.parseDouble(populacaoField.getText());
+            Integer hospitaisCidade = Integer.parseInt(hospitaisField.getText());
+            Integer postosCidade = Integer.parseInt(postosField.getText());
+
+            var informacoes = new CadastrarCidadeDTO(null, nomeCidade, estadoCidade, populacaoCidade, hospitaisCidade, postosCidade);
+
+            var cidade = service.cadastrar(informacoes);
+
+            JOptionPane.showMessageDialog(this, new DetalhesCidadeDTO(cidade));
+        });
 
         // Ação do botão Limpar
         limparButton.addActionListener(e -> {
@@ -41,8 +66,11 @@ public class MenuCadastrarCidade extends JFrame {
             postosField.setText("");
         });
 
+        voltarButton.addActionListener(e -> SwingUtilities.invokeLater(MenuPrincipalCidade::new));
+
         buttonPanel.add(cadastrarButton);
         buttonPanel.add(limparButton);
+        buttonPanel.add(voltarButton);
         mainPanel.add(buttonPanel);
 
         add(mainPanel);

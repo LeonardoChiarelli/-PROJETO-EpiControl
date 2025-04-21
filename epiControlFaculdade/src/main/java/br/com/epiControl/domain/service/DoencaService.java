@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoencaService {
 
@@ -48,5 +50,9 @@ public class DoencaService {
         doenca.retirarInformacoes(dto);
         repository.save(doenca);
         return new DetalhesDoencaDTO(doenca);
+    }
+
+    public List<Doenca> listarJOption() {
+        return repository.findAll();
     }
 }

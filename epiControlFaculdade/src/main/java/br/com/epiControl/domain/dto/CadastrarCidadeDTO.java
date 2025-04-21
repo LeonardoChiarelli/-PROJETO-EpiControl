@@ -12,7 +12,7 @@ public record CadastrarCidadeDTO(
 
         @NotBlank
         @Size(min = 2, max = 2)
-        String SiglaEstado,
+        String siglaEstado,
 
         @NotNull
         Double populacao,
@@ -22,5 +22,4 @@ public record CadastrarCidadeDTO(
 
         @NotNull
         Integer quantidadePostosDeSaude
-) {
-}
+){}

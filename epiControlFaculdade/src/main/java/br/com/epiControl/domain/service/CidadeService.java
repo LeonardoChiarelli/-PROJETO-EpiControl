@@ -1,5 +1,6 @@
 package br.com.epiControl.domain.service;
 
+import br.com.epiControl.domain.dto.AtualizarDadosCidadeDTO;
 import br.com.epiControl.domain.dto.CadastrarCidadeDTO;
 import br.com.epiControl.domain.dto.ListaCidadesDTO;
 import br.com.epiControl.domain.helper.HelperMethod;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CidadeService {
@@ -36,4 +39,14 @@ public class CidadeService {
         return HelperMethod.carregarCidade(idOuNome);
     }
 
+    public List<Cidade> listarJOption() {
+        return repository.findAll();
+    }
+
+    public Cidade atualizarInfo(AtualizarDadosCidadeDTO dto) {
+        var cidade = HelperMethod.carregarCidade(dto.idOuNome());
+        cidade.atualizarInfo(dto);
+        repository.save(cidade);
+        return cidade;
+    }
 }
