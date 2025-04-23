@@ -1,8 +1,8 @@
 package br.com.epiControl.domain.viewer.main;
 
-import br.com.epiControl.domain.viewer.casos.MenuAnexarCasos;
 import br.com.epiControl.domain.viewer.cidadeFeito.MenuPrincipalCidade;
 import br.com.epiControl.domain.viewer.doencaFeito.MenuPrincipalDoenca;
+import br.com.epiControl.domain.viewer.powerBI.MenuExibicaoPrincipalPoweBI;
 import br.com.epiControl.general.config.ServiceRegistry;
 
 import javax.swing.*;
@@ -10,10 +10,7 @@ import java.awt.*;
 
 public class MenuExibicaoPrincipal extends JFrame {
 
-    private final ServiceRegistry registry;
-
     public MenuExibicaoPrincipal(ServiceRegistry registry) {
-        this.registry = registry;
         setTitle("Menu de Exibição Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -43,9 +40,9 @@ public class MenuExibicaoPrincipal extends JFrame {
         botaoAnexarDoenca.setMaximumSize(buttonSize);
         botaoAnexarDoenca.setFont(buttonFont);
 
-        JButton botaoGerarGrafico = new JButton("Gerar Relatório");
-        botaoGerarGrafico.setMaximumSize(buttonSize);
-        botaoGerarGrafico.setFont(buttonFont);
+        JButton botaoGraficos = new JButton("Gráficos");
+        botaoGraficos.setMaximumSize(buttonSize);
+        botaoGraficos.setFont(buttonFont);
 
         // Espaçamento entre os botões
         mainPanel.add(Box.createVerticalGlue());
@@ -55,16 +52,28 @@ public class MenuExibicaoPrincipal extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));
         mainPanel.add(botaoAnexarDoenca);
         mainPanel.add(Box.createRigidArea(new Dimension(10, 20)));
-        mainPanel.add(botaoGerarGrafico);
+        mainPanel.add(botaoGraficos);
         mainPanel.add(Box.createVerticalGlue());
 
-        botaoCidade.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry)));
+        botaoCidade.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry));
+            dispose();
+        });
 
-        botaoDoenca.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry)));
+        botaoDoenca.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry));
+            dispose();
+        });
 
-        // botaoAnexarDoenca.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuAnexarCasos(registry)));
+        /* botaoAnexarDoenca.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new MenuAnexarCasos(registry));
+            dispose();
+        }); */
 
-        // botaoGerarGrafico.addActionListener(e -> );
+        botaoGraficos.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new MenuExibicaoPrincipalPoweBI(registry));
+            dispose();
+        });
 
         add(mainPanel);
         setVisible(true);

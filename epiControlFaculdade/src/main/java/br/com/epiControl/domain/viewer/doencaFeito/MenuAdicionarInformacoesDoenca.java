@@ -10,6 +10,7 @@ import br.com.epiControl.domain.service.CasosService;
 import br.com.epiControl.domain.service.CidadeService;
 import br.com.epiControl.domain.service.DoencaService;
 import br.com.epiControl.domain.viewer.cidadeFeito.MenuPrincipalCidade;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
 import br.com.epiControl.general.config.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -23,8 +24,8 @@ public class MenuAdicionarInformacoesDoenca extends JFrame {
 
     private final DoencaService service;
 
-    public MenuAdicionarInformacoesDoenca(DoencaService service){
-        this.service = service;
+    public MenuAdicionarInformacoesDoenca(ServiceRegistry registry){
+        this.service = registry.getDoencaService();
         setTitle("Menu Adicionar Informações");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -86,16 +87,9 @@ public class MenuAdicionarInformacoesDoenca extends JFrame {
             JOptionPane.showMessageDialog(this, doenca);
         });
 
-        voltarButton.addActionListener(e -> {
-            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
-
-            ServiceRegistry registry = new ServiceRegistry(
-                    context.getBean(CidadeService.class),
-                    context.getBean(DoencaService.class),
-                    context.getBean(CasosService.class)
-            );
-
+        voltarButton.addActionListener(e-> {
             SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry));
+            dispose();
         });
 
         add(mainPanel);

@@ -31,7 +31,11 @@ public class Doenca {
     private List<String> sintomas;
     private List<String> formasDeTransmissao;
     private List<String> medidasDePrevencao;
+
+    @Column(name = "taxa_de_mortalidade(%)")
     private Double taxaDeMortalidade; // obitos/casos confirmados
+
+    @Column(name = "taxa_de_transmissao(%)")
     private Double taxaDeTransmissao; // num médio de pessoas infectadas por um doente
 
     public Doenca(@Valid CadastrarDoencaDTO dto) {

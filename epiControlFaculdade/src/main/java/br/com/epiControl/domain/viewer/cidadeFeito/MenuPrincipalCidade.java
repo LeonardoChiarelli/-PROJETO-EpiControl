@@ -1,22 +1,19 @@
 package br.com.epiControl.domain.viewer.cidadeFeito;
 
-import br.com.epiControl.EpiControlApplication;
-import br.com.epiControl.domain.service.CasosService;
 import br.com.epiControl.domain.service.CidadeService;
-import br.com.epiControl.domain.service.DoencaService;
 import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
 import br.com.epiControl.general.config.ServiceRegistry;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuPrincipalCidade extends JFrame {
 
+    private final ServiceRegistry registry;
     private final CidadeService service;
 
     public MenuPrincipalCidade(ServiceRegistry registry){
+        this.registry = registry;
         this.service = registry.getCidadeService();
         setTitle("Menu Principal Cidade");
         setSize(600, 600);
@@ -84,25 +81,40 @@ public class MenuPrincipalCidade extends JFrame {
         buttonPanel.add(voltarBtn);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 
-        cadastrarCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuCadastrarCidade(service)));
-
-        listarCidadesBtn.addActionListener(e -> JOptionPane.showMessageDialog(null, service.listarJOption()));
-
-        detalharCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(MenuDetalharCidade::new));
-
-        voltarBtn.addActionListener(e -> {
-            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
-
-            ServiceRegistry registry = new ServiceRegistry(
-                    context.getBean(CidadeService.class),
-                    context.getBean(DoencaService.class),
-                    context.getBean(CasosService.class)
-            );
-
-            SwingUtilities.invokeLater(() -> new MenuExibicaoPrincipal(registry));
+        cadastrarCidadeBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new MenuCadastrarCidade(registry));
+            dispose();
         });
 
-        atualizarInfoCidadeBtn.addActionListener(e -> SwingUtilities.invokeLater(() -> new MenuAtualizarInformacoesCidade(service)));
+        listarCidadesBtn.addActionListener(e -> {
+            String textoFinal = service.listarJOption();
+
+            JTextArea textArea = new JTextArea(textoFinal);
+            textArea.setColumns(40);
+            textArea.setRows(20);
+            textArea.setWrapStyleWord(true);
+            textArea.setLineWrap(true);
+            textArea.setEditable(false);
+
+            JScrollPane scrollPane = new JScrollPane(textArea);
+
+            JOptionPane.showMessageDialog(this, scrollPane, "Lista de Cidades", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        detalharCidadeBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new MenuDetalharCidade(registry));
+            dispose();
+        });
+
+        voltarBtn.addActionListener(e-> {
+            SwingUtilities.invokeLater(() -> new MenuExibicaoPrincipal(registry));
+            dispose();
+        });
+
+        atualizarInfoCidadeBtn.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> new MenuAtualizarInformacoesCidade(registry));
+            dispose();
+        });
         return buttonPanel;
     }
 }

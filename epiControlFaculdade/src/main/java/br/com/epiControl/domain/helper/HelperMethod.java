@@ -5,19 +5,25 @@ import br.com.epiControl.domain.model.Doenca;
 import br.com.epiControl.domain.repository.ICidadeRepository;
 import br.com.epiControl.domain.repository.IDoencaRepository;
 import br.com.epiControl.general.exception.ValidacaoException;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HelperMethod {
 
     @Autowired
-    private static IDoencaRepository doencaRepository;
+    private IDoencaRepository doencaRepo;
 
     @Autowired
-    private static ICidadeRepository cidaderepository;
+    private ICidadeRepository cidadeRepo;
+
+    private static ICidadeRepository cidadeRepository;
+    private static IDoencaRepository doencaRepository;
 
     public static Doenca carregarDoenca(String idOuNome) {
         try {
-            var id = Long.parseLong(idOuNome);
+            Long id = Long.parseLong(idOuNome);
             return doencaRepository.findById(id).orElseThrow(() -> new ValidacaoException("ID não encontrado ou não faz referência à nenhuma doença"));
         } catch (NumberFormatException e) {
             return doencaRepository.findByNome(idOuNome).orElseThrow(() -> new ValidacaoException("Doença não encontrada"));
@@ -26,10 +32,16 @@ public class HelperMethod {
 
     public static Cidade carregarCidade(String idOuNome){
         try {
-            var id = Long.parseLong(idOuNome);
-            return cidaderepository.findById(id).orElseThrow(() -> new ValidacaoException("ID não encontrado ou não faz referência à nenhuma cidade"));
-        } catch (NumberFormatException e) {
-            return cidaderepository.findByNome(idOuNome).orElseThrow(() -> new ValidacaoException("Cidade não encontrada"));
+            Long id = Long.parseLong(idOuNome);
+            return cidadeRepository.findById(id).orElseThrow(() -> new ValidacaoException("ID não encontrado ou não faz referência à nenhuma cidade"));
+        } catch (NumberFormatException | NullPointerException e) {
+            return cidadeRepository.findByNome(idOuNome).orElseThrow(() -> new ValidacaoException("Cidade não encontrada"));
         }
+    }
+
+    @PostConstruct
+    public void init(){
+        HelperMethod.cidadeRepository = cidadeRepo;
+        HelperMethod.doencaRepository = doencaRepo;
     }
 }

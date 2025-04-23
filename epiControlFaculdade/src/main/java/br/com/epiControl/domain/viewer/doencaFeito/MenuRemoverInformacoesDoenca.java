@@ -6,6 +6,8 @@ import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.model.AgenteCausador;
 import br.com.epiControl.domain.repository.IDoencaRepository;
 import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
+import br.com.epiControl.general.config.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +18,8 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
 
     private final DoencaService service;
 
-    public MenuRemoverInformacoesDoenca(DoencaService service){
-        this.service = service;
+    public MenuRemoverInformacoesDoenca(ServiceRegistry registry){
+        this.service = registry.getDoencaService();
 
         setTitle("Menu Remover Informações");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,6 +42,7 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
 
         JButton registrarInformacoes = new JButton("Registrar Informações");
         JButton limparButton = new JButton("Limpar");
+        JButton volarButton = new JButton("Voltar");
 
         mainPanel.add(createLabeledField("Id ou Nome:", idOuNomeField));
         mainPanel.add(createLabeledField("Agente Causador:", agenteCausadorBox));
@@ -51,6 +54,7 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(registrarInformacoes);
         buttonPanel.add(limparButton);
+        buttonPanel.add(volarButton);
         buttonPanel.setBackground(new Color(255, 235, 215));
         mainPanel.add(buttonPanel);
 
@@ -76,6 +80,11 @@ public class MenuRemoverInformacoesDoenca extends JFrame {
             var doenca = service.removerInfo(idOuNomeField.getText(), informacoes);
 
             JOptionPane.showMessageDialog(this, doenca);
+        });
+
+        volarButton.addActionListener(e-> {
+            SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry));
+            dispose();
         });
 
         add(mainPanel);

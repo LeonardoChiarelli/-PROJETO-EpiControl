@@ -3,6 +3,7 @@ package br.com.epiControl.domain.service;
 import br.com.epiControl.domain.dto.AtualizarDadosCidadeDTO;
 import br.com.epiControl.domain.dto.CadastrarCidadeDTO;
 import br.com.epiControl.domain.dto.ListaCidadesDTO;
+import br.com.epiControl.domain.helper.CidadeFormatter;
 import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.general.exception.ValidacaoException;
 import br.com.epiControl.domain.model.Cidade;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CidadeService {
@@ -39,8 +41,11 @@ public class CidadeService {
         return HelperMethod.carregarCidade(idOuNome);
     }
 
-    public List<Cidade> listarJOption() {
-        return repository.findAll();
+    public String listarJOption() {
+        return repository.findAll()
+                .stream()
+                .map(CidadeFormatter::formatarLista)
+                .collect(Collectors.joining("\n\n"));
     }
 
     public Cidade atualizarInfo(AtualizarDadosCidadeDTO dto) {

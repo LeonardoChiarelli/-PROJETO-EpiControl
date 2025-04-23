@@ -1,13 +1,10 @@
 package br.com.epiControl.domain.viewer.doencaFeito;
 
-import br.com.epiControl.EpiControlApplication;
-import br.com.epiControl.domain.service.CasosService;
-import br.com.epiControl.domain.service.CidadeService;
+import br.com.epiControl.domain.helper.DoencaFormatter;
+import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.service.DoencaService;
-import br.com.epiControl.domain.viewer.cidadeFeito.MenuPrincipalCidade;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
 import br.com.epiControl.general.config.ServiceRegistry;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +13,8 @@ public class MenuDetalharDoenca extends JFrame {
 
     private final DoencaService service;
 
-    public MenuDetalharDoenca(DoencaService service){
-        this.service = service;
+    public MenuDetalharDoenca(ServiceRegistry registry){
+        this.service = registry.getDoencaService();
         setTitle("Menu Detalhar Doença");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -41,18 +38,17 @@ public class MenuDetalharDoenca extends JFrame {
         buttonPanel.setBackground(new Color(255, 235, 215));
         mainPanel.add(buttonPanel);
 
-        detalharButton.addActionListener(e -> JOptionPane.showMessageDialog(this, service.detalhar(idOuNomeField.getText())));
+        detalharButton.addActionListener(e -> {
+            String idOuNomeDoenca = idOuNomeField.getText();
 
-        voltarButton.addActionListener(e -> {
-            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
+            var doenca = HelperMethod.carregarDoenca(idOuNomeDoenca);
 
-            ServiceRegistry registry = new ServiceRegistry(
-                    context.getBean(CidadeService.class),
-                    context.getBean(DoencaService.class),
-                    context.getBean(CasosService.class)
-            );
+            JOptionPane.showMessageDialog(this, DoencaFormatter.formatarDetalhes(doenca));
+        });
 
+        voltarButton.addActionListener(e-> {
             SwingUtilities.invokeLater(() -> new MenuPrincipalDoenca(registry));
+            dispose();
         });
 
         add(mainPanel);

@@ -2,6 +2,7 @@ package br.com.epiControl.domain.viewer.cidadeFeito;
 
 import br.com.epiControl.EpiControlApplication;
 import br.com.epiControl.domain.dto.DetalhesCidadeDTO;
+import br.com.epiControl.domain.helper.CidadeFormatter;
 import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.service.CasosService;
 import br.com.epiControl.domain.service.CidadeService;
@@ -16,7 +17,7 @@ import java.awt.*;
 
 public class MenuDetalharCidade extends JFrame {
 
-    public MenuDetalharCidade(){
+    public MenuDetalharCidade(ServiceRegistry registry){
         setTitle("Menu Detalhar Cidade");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,6 +30,14 @@ public class MenuDetalharCidade extends JFrame {
 
         JTextField idOuNomeField = createFieldWithLabel(mainPanel, "Id ou Nome da Cidade:");
 
+        JPanel buttonPanel = getJPanel(registry, idOuNomeField);
+        mainPanel.add(buttonPanel);
+
+        add(mainPanel);
+        setVisible(true);
+    }
+
+    private JPanel getJPanel(ServiceRegistry registry, JTextField idOuNomeField) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(255, 235, 215));
         buttonPanel.setLayout(new FlowLayout());
@@ -41,27 +50,17 @@ public class MenuDetalharCidade extends JFrame {
 
             var cidade = HelperMethod.carregarCidade(idOuNomeCidade);
 
-            JOptionPane.showMessageDialog(this, new DetalhesCidadeDTO(cidade));
+            JOptionPane.showMessageDialog(this, CidadeFormatter.formatarDetalhes(cidade));
         });
 
-        voltarButton.addActionListener(e -> {
-            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
-
-            ServiceRegistry registry = new ServiceRegistry(
-                    context.getBean(CidadeService.class),
-                    context.getBean(DoencaService.class),
-                    context.getBean(CasosService.class)
-            );
-
-            SwingUtilities.invokeLater(() -> new MenuExibicaoPrincipal(registry));
+        voltarButton.addActionListener(e-> {
+            SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry));
+            dispose();
         });
 
         buttonPanel.add(detalharButton);
         buttonPanel.add(voltarButton);
-        mainPanel.add(buttonPanel);
-
-        add(mainPanel);
-        setVisible(true);
+        return buttonPanel;
     }
 
     private JTextField createFieldWithLabel(JPanel panel, String labelText) {
@@ -80,9 +79,5 @@ public class MenuDetalharCidade extends JFrame {
         panel.add(fieldPanel);
 
         return textField;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MenuDetalharCidade::new);
     }
 }

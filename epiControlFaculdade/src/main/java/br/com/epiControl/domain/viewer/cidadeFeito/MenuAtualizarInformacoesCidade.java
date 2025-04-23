@@ -1,16 +1,10 @@
 package br.com.epiControl.domain.viewer.cidadeFeito;
 
-import br.com.epiControl.EpiControlApplication;
 import br.com.epiControl.domain.dto.AtualizarDadosCidadeDTO;
 import br.com.epiControl.domain.dto.DetalhesCidadeDTO;
-import br.com.epiControl.domain.service.CasosService;
 import br.com.epiControl.domain.service.CidadeService;
-import br.com.epiControl.domain.service.DoencaService;
+import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
 import br.com.epiControl.general.config.ServiceRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,8 +13,8 @@ public class MenuAtualizarInformacoesCidade extends JFrame {
 
     private final CidadeService service;
 
-    public MenuAtualizarInformacoesCidade(CidadeService service){
-        this.service = service;
+    public MenuAtualizarInformacoesCidade(ServiceRegistry registry){
+        this.service = registry.getCidadeService();
         setTitle("Menu Atualizar Informações Cidade");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,16 +58,9 @@ public class MenuAtualizarInformacoesCidade extends JFrame {
             postosField.setText("");
         });
 
-        voltarButton.addActionListener(e -> {
-            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
-
-            ServiceRegistry registry = new ServiceRegistry(
-                    context.getBean(CidadeService.class),
-                    context.getBean(DoencaService.class),
-                    context.getBean(CasosService.class)
-            );
-
+        voltarButton.addActionListener(e-> {
             SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry));
+            dispose();
         });
 
         buttonPanel.add(atualizarButton);

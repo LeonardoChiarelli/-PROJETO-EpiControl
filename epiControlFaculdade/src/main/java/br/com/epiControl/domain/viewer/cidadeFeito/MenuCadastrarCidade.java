@@ -18,8 +18,8 @@ public class MenuCadastrarCidade extends JFrame {
 
     private final CidadeService service;
 
-    public MenuCadastrarCidade(CidadeService service) {
-        this.service = service;
+    public MenuCadastrarCidade(ServiceRegistry registry) {
+        this.service = registry.getCidadeService();
         setTitle("Menu de Cadastro de Cidades");
         setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,16 +70,9 @@ public class MenuCadastrarCidade extends JFrame {
             postosField.setText("");
         });
 
-        voltarButton.addActionListener(e -> {
-            ApplicationContext context = SpringApplication.run(EpiControlApplication.class);
-
-            ServiceRegistry registry = new ServiceRegistry(
-                    context.getBean(CidadeService.class),
-                    context.getBean(DoencaService.class),
-                    context.getBean(CasosService.class)
-            );
-
+        voltarButton.addActionListener(e-> {
             SwingUtilities.invokeLater(() -> new MenuPrincipalCidade(registry));
+            dispose();
         });
 
         buttonPanel.add(cadastrarButton);

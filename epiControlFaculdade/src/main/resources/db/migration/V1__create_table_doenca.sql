@@ -14,8 +14,8 @@ create table doencas(
 
 insert into doencas values(1, "Dengue", "VIRUS", "Febre alta, dores musculares, dor de cabeça, dor atrás dos olhos, manchas vermelhas na pele, náuseas, vômitos", "Picada do mosquito Aedes aegypti infectado", "Eliminar criadouros do mosquito, uso de repelentes, telas de proteção, campanhas de conscientização", 1.80, 0.03);
 
-insert into doencas values(2, "Leptospirose", "BACTERIA", "Febre prolongada, mal-estar, dor abdominal, diarreia ou prisão de ventre, manchas rosadas no tronco", "Ingestão de água ou alimentos contaminados com fezes ou urina de pessoas infectadas", "Higiene pessoal, saneamento básico, vacinação, cuidados com a água e alimentos", 1.20, 10.00);
+insert into doencas values(2, "Leptospirose", "BACTERIAS", "Febre prolongada, mal-estar, dor abdominal, diarreia ou prisão de ventre, manchas rosadas no tronco", "Ingestão de água ou alimentos contaminados com fezes ou urina de pessoas infectadas", "Higiene pessoal, saneamento básico, vacinação, cuidados com a água e alimentos", 1.20, 10.00);
 
-insert into doencas values(3, "Febre Tifoide", "BACTERIA", "Febre alta, dores musculares, dor de cabeça, dor atrás dos olhos, manchas vermelhas na pele, náuseas, vômitos", "Picada do mosquito Aedes aegypti infectado", "Eliminar criadouros do mosquito, uso de repelentes, telas de proteção, campanhas de conscientização", 1.50, 0.65);
+insert into doencas values(3, "Febre Tifoide", "BACTERIAS", "Febre alta, dores musculares, dor de cabeça, dor atrás dos olhos, manchas vermelhas na pele, náuseas, vômitos", "Ingestão de alimentos e água contaminados", "Higiene alimentar, saneamento básico, vacinação quando disponível", 1.50, 0.65);
 
 insert into doencas values(4, "Hepatite A", "VIRUS", "Cansaço, febre, enjoo, vômitos, urina escura, pele e olhos amarelados (icterícia)", " via fecal-oral (alimentos ou água contaminados)", "Vacinação, higiene alimentar", 1.10, 0.50);

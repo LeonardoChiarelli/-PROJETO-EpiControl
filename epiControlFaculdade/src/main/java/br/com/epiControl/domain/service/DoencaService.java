@@ -3,6 +3,7 @@ package br.com.epiControl.domain.service;
 import br.com.epiControl.domain.dto.AtualizarDadosDoencaDTO;
 import br.com.epiControl.domain.dto.CadastrarDoencaDTO;
 import br.com.epiControl.domain.dto.DetalhesDoencaDTO;
+import br.com.epiControl.domain.helper.DoencaFormatter;
 import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.general.exception.ValidacaoException;
 import br.com.epiControl.domain.model.Doenca;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DoencaService {
@@ -52,7 +54,10 @@ public class DoencaService {
         return new DetalhesDoencaDTO(doenca);
     }
 
-    public List<Doenca> listarJOption() {
-        return repository.findAll();
+    public String listarJOption() {
+        return repository.findAll()
+                .stream()
+                .map(DoencaFormatter::formatarLista)
+                .collect(Collectors.joining("\n\n"));
     }
 }
