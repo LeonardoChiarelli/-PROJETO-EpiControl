@@ -1,20 +1,14 @@
 package br.com.epiControl.domain.viewer.doencaFeito;
 
-import br.com.epiControl.EpiControlApplication;
 import br.com.epiControl.domain.dto.CadastrarDoencaDTO;
 import br.com.epiControl.domain.dto.DetalhesDoencaDTO;
-import br.com.epiControl.domain.model.AgenteCausador;
-import br.com.epiControl.domain.service.CasosService;
-import br.com.epiControl.domain.service.CidadeService;
 import br.com.epiControl.domain.service.DoencaService;
-import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
 import br.com.epiControl.general.config.ServiceRegistry;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 public class MenuCadastrarDoenca extends JFrame{
 
@@ -75,7 +69,7 @@ public class MenuCadastrarDoenca extends JFrame{
         cadastrarButton.addActionListener(e -> {
 
             String nome = nomeField.getText();
-            AgenteCausador agente = getAgenteCausador(agenteCausadorBox.getSelectedItem());
+            String  agente = getAgenteCausador(Objects.requireNonNull(agenteCausadorBox.getSelectedItem()).toString());
             String sintomas = sintomasField.getText();
             String transmissao = transmissaoField.getText();
             String prevencao = prevencaoField.getText();
@@ -88,7 +82,7 @@ public class MenuCadastrarDoenca extends JFrame{
             assert prevencao != null;
             assert taxa != 0;
 
-            var infomacoes = new CadastrarDoencaDTO(null, nome, List.of(agente), List.of(sintomas), List.of(transmissao), List.of(prevencao), taxa);
+            var infomacoes = new CadastrarDoencaDTO(null, nome, agente, sintomas, transmissao, prevencao, taxa);
 
             var doenca = service.cadastrar(infomacoes);
 
@@ -104,18 +98,18 @@ public class MenuCadastrarDoenca extends JFrame{
         setVisible(true);
     }
 
-    private AgenteCausador getAgenteCausador(Object selectedItem) {
+    private String getAgenteCausador(String selectedItem) {
+        String agenteCausador = selectedItem;
 
-        String agenteCausador = (String) selectedItem;
+        switch (agenteCausador){
+            case "VÍRUS" -> agenteCausador = "VIRUS";
+            case "BACTÉRIAS" -> agenteCausador = "BACTERIAS";
+            case "PROTOZOÁRIOS" -> agenteCausador = "PROTOZOARIOS";
+            case "FUNGOS" -> agenteCausador = "FUNGOS";
+            case "VERMES PARASITAS" -> agenteCausador = "VERMES_PARASITAS";
+        }
 
-        return switch (agenteCausador){
-            case "VÍRUS" -> AgenteCausador.VIRUS;
-            case "BACTÉRIAS" -> AgenteCausador.BACTERIAS;
-            case "PROTOZOÁRIOS" -> AgenteCausador.PROTOZOARIOS;
-            case "FUNGOS" -> AgenteCausador.FUNGOS;
-            case "VERMES PARASITAS" -> AgenteCausador.VERMES_PARASITAS;
-            default -> null;
-        };
+        return agenteCausador;
     }
 
     private JPanel createLabeledField(String labelText, JComponent inputComponent) {

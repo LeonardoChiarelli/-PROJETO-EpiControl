@@ -57,14 +57,6 @@ public class MenuPrincipalDoenca extends JFrame {
         detalharDoencaBtn.setMaximumSize(buttonSize);
         detalharDoencaBtn.setFont(buttonFont);
 
-        JButton atualizarInformacoesBtn = new JButton("Atualizar Informações");
-        atualizarInformacoesBtn.setMaximumSize(buttonSize);
-        atualizarInformacoesBtn.setFont(buttonFont);
-
-        JButton removerInformacoesBtn = new JButton("Remover Informações");
-        removerInformacoesBtn.setMaximumSize(buttonSize);
-        removerInformacoesBtn.setFont(buttonFont);
-
         JButton voltarBtn = new JButton("Voltar");
         voltarBtn.setMaximumSize(buttonSize);
         voltarBtn.setFont(buttonFont);
@@ -83,12 +75,6 @@ public class MenuPrincipalDoenca extends JFrame {
         buttonPanel.add(detalharDoencaBtn);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 
-        buttonPanel.add(atualizarInformacoesBtn);
-        buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
-
-        buttonPanel.add(removerInformacoesBtn);
-        buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
-
         buttonPanel.add(voltarBtn);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 20)));
 
@@ -99,16 +85,6 @@ public class MenuPrincipalDoenca extends JFrame {
 
         detalharDoencaBtn.addActionListener(e -> {
             SwingUtilities.invokeLater(() -> new MenuDetalharDoenca(registry));
-            dispose();
-        });
-
-        atualizarInformacoesBtn.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> new MenuAdicionarInformacoesDoenca(registry));
-            dispose();
-        });
-
-        removerInformacoesBtn.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> new MenuRemoverInformacoesDoenca(registry));
             dispose();
         });
 

@@ -1,6 +1,5 @@
 package br.com.epiControl.domain.controller;
 
-import br.com.epiControl.domain.dto.AtualizarDadosDoencaDTO;
 import br.com.epiControl.domain.dto.CadastrarDoencaDTO;
 import br.com.epiControl.domain.dto.DetalhesDoencaDTO;
 import br.com.epiControl.domain.dto.ListaDoencasDTO;
@@ -39,17 +38,5 @@ public class DoencaController {
     @GetMapping("/{idOuNome}")
     public ResponseEntity<DetalhesDoencaDTO> detalharDoenca(@PathVariable String idOuNome){
         return ResponseEntity.ok(service.detalhar(idOuNome));
-    }
-
-    @PutMapping("/{idOuNome}/adicionar")
-    @Transactional
-    public ResponseEntity<DetalhesDoencaDTO> atualizarDados(@PathVariable String idOuNome, @RequestBody @Valid AtualizarDadosDoencaDTO dto){
-        return ResponseEntity.ok(service.adicionarInfo(idOuNome, dto));
-    }
-
-    @PutMapping("/{idOuNome}/remover")
-    @Transactional
-    public ResponseEntity<DetalhesDoencaDTO> removerInformacoes(@PathVariable String idOuNome, @RequestBody @Valid AtualizarDadosDoencaDTO dto){
-        return ResponseEntity.ok(service.removerInfo(idOuNome, dto));
     }
 }

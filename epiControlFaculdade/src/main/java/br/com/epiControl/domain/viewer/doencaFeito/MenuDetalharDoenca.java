@@ -3,7 +3,6 @@ package br.com.epiControl.domain.viewer.doencaFeito;
 import br.com.epiControl.domain.helper.DoencaFormatter;
 import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.service.DoencaService;
-import br.com.epiControl.domain.viewer.main.MenuExibicaoPrincipal;
 import br.com.epiControl.general.config.ServiceRegistry;
 
 import javax.swing.*;
@@ -30,7 +29,7 @@ public class MenuDetalharDoenca extends JFrame {
         JButton detalharButton = new JButton("Detalhar");
         JButton voltarButton = new JButton("Voltar");
 
-        mainPanel.add(createLabeledField("Id ou Nome:", idOuNomeField));
+        mainPanel.add(createLabeledField(idOuNomeField));
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(detalharButton);
@@ -55,11 +54,11 @@ public class MenuDetalharDoenca extends JFrame {
         setVisible(true);
     }
 
-    private JPanel createLabeledField(String labelText, JComponent inputComponent) {
+    private JPanel createLabeledField(JComponent inputComponent) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.setBackground(new Color(255, 235, 215));
 
-        JLabel label = new JLabel(labelText);
+        JLabel label = new JLabel("Id ou Nome:");
         label.setPreferredSize(new Dimension(200, 25));
         inputComponent.setPreferredSize(new Dimension(200, 25));
         panel.add(label);

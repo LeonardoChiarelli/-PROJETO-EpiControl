@@ -1,11 +1,7 @@
 package br.com.epiControl.domain.dto;
 
-import br.com.epiControl.domain.model.AgenteCausador;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.NonNull;
-
-import java.util.List;
 
 public record CadastrarDoencaDTO(
 
@@ -14,17 +10,17 @@ public record CadastrarDoencaDTO(
         @NotBlank
         String nome,
 
-        @NonNull
-        List<AgenteCausador> agenteCausador,
+        @NotBlank
+        String agenteCausador,
 
-        @NotNull
-        List<String> sintomas,
+        @NotBlank
+        String sintomas,
 
-        @NotNull
-        List<String> formasDeTransmissao,
+        @NotBlank
+        String formasDeTransmissao,
 
-        @NotNull
-        List<String> medidasDePrevencao,
+        @NotBlank
+        String medidasDePrevencao,
 
         @NotNull
         Double taxaDeTransmissao

@@ -11,12 +11,12 @@ public class DoencaFormatter {
                     🤒 Sintomas: %s
                     🔄 Formas de Transmissão: %s
                     🛡️ Medidas de Prevenção: %s
-                    💀 Taxa de Mortalidade: %f
-                    📈 Taxa de Transmissão: %f
+                    💀 Taxa de Mortalidade: %.2f%%
+                    📈 Taxa de Transmissão: %.2f%%
                     🔢 ID: %d
                     """,
                 doenca.getNome(),
-                String.join(", ", doenca.getAgenteCausador().stream().map(Enum::name).toList()),
+                String.join(", ", doenca.getAgenteCausador()),
                 String.join(", ", doenca.getSintomas()),
                 String.join(", ", doenca.getFormasDeTransmissao()),
                 String.join(", ", doenca.getMedidasDePrevencao()),
@@ -34,7 +34,7 @@ public class DoencaFormatter {
                     🔢 ID: %d
                     """,
                 doenca.getNome(),
-                String.join(", ", doenca.getAgenteCausador().stream().map(Enum::name).toList()),
+                String.join(", ", doenca.getAgenteCausador()),
                 String.join(", ", doenca.getFormasDeTransmissao()),
                 doenca.getId()
         );
