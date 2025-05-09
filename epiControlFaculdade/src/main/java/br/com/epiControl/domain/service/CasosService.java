@@ -1,6 +1,7 @@
 package br.com.epiControl.domain.service;
 
 import br.com.epiControl.domain.dto.*;
+import br.com.epiControl.domain.helper.CasosFormatter;
 import br.com.epiControl.domain.helper.HelperMethod;
 import br.com.epiControl.domain.model.CasosEpidemiologicos;
 import br.com.epiControl.domain.repository.ICasosRepository;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 @Service
 public class CasosService {
@@ -58,5 +61,26 @@ public class CasosService {
         var caso = new CasosEpidemiologicos(cidade, doenca, dataDeRegistro, dto);
 
         return new DetalhesCasosDTO(caso);
+    }
+
+    public String listarCasosPorCidadeJOption() {
+        return repository.findAll()
+                .stream()
+                .map(CasosFormatter::formatarLista)
+                .collect(Collectors.joining("\n\n"));
+    }
+
+    public String listarCasosPorDoencaJOption() {
+        return repository.findAll()
+                .stream()
+                .map(CasosFormatter::formatarLista)
+                .collect(Collectors.joining("\n\n"));
+    }
+
+    public String listarCasosPorCidadeEDoencaJOption() {
+        return repository.findAll()
+                .stream()
+                .map(CasosFormatter::formatarLista)
+                .collect(Collectors.joining("\n\n"));
     }
 }
