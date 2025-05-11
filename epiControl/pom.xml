@@ -11,7 +11,7 @@
 	<groupId>br.com</groupId>
 	<artifactId>epiControl</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>epiControlFaculdade</name>
+	<name>epiControl</name>
 	<description>Sistema para a prevenção, acompanhamento e controle de epidemais</description>
 	<url/>
 	<licenses>
