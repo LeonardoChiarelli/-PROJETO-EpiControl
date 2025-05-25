@@ -74,7 +74,7 @@ public class MenuExibicaoPrincipal extends JFrame {
 
         botaoGraficos.addActionListener(e -> {
             try{
-                url = "";
+                url = "https://app.powerbi.com/groups/me/reports/c228c479-413b-4ac4-b3cd-5c52d9a422f4/80ba141c0dee1e0da56d?experience=power-bi";
 
                 Desktop.getDesktop().browse(new java.net.URI(url));
             } catch (Exception ex){

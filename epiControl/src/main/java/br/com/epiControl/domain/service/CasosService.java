@@ -28,8 +28,11 @@ public class CasosService {
         var doencaJaAnexada = repository.existsByCidadeIdAndDoencaId(cidade.getId(), doenca.getId());
         if (doencaJaAnexada) { throw new ValidacaoException("Doença já anexada à cidade, considere apenas atualizar os dados"); }
 
+        var caso = new CasosEpidemiologicos(dto, cidade, doenca);
 
-        return new CasosEpidemiologicos(dto, cidade, doenca);
+        repository.save(caso);
+
+        return caso;
     }
 
     public Page<ListarCasosPorDoencaDTO> listarCasosPorDoenca(String idOuNome, Pageable pageable) {
@@ -60,24 +63,12 @@ public class CasosService {
 
         var caso = new CasosEpidemiologicos(cidade, doenca, dataDeRegistro, dto);
 
+        repository.save(caso);
+
         return new DetalhesCasosDTO(caso);
     }
 
     public String listarCasosPorCidadeJOption() {
-        return repository.findAll()
-                .stream()
-                .map(CasosFormatter::formatar)
-                .collect(Collectors.joining("\n\n"));
-    }
-
-    public String listarCasosPorDoencaJOption() {
-        return repository.findAll()
-                .stream()
-                .map(CasosFormatter::formatar)
-                .collect(Collectors.joining("\n\n"));
-    }
-
-    public String listarCasosPorCidadeEDoencaJOption() {
         return repository.findAll()
                 .stream()
                 .map(CasosFormatter::formatar)

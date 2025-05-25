@@ -34,7 +34,7 @@ public class MenuCadastrarCidade extends JFrame {
         // Campos e labels
         JTextField nomeField = createFieldWithLabel(mainPanel, "Nome:");
         JTextField estadoField = createFieldWithLabel(mainPanel, "Sigla do Estado:");
-        JTextField populacaoField = createFieldWithLabel(mainPanel, "População Total:");
+        JTextField populacaoField = createFieldWithLabel(mainPanel, "População Total (em milhões):");
         JTextField hospitaisField = createFieldWithLabel(mainPanel, "Quantidade de Hospitais:");
         JTextField postosField = createFieldWithLabel(mainPanel, "Quantidade de Postos de Saúde:");
 
