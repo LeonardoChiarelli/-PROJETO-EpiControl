@@ -1,6 +1,5 @@
 package br.com.epiControl.domain.repository;
 
-import br.com.epiControl.domain.dto.ListarCasosPorCidadeEDocencaDTO;
 import br.com.epiControl.domain.model.CasosEpidemiologicos;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
